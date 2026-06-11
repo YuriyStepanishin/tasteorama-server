@@ -3,32 +3,54 @@ import 'dotenv/config';
 import cors from 'cors';
 
 import { connectMongoDB } from './db/connectMongoDB.js';
+
+// import { errors } from 'celebrate';
+// import cookieParser from 'cookie-parser';
 import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
-
-import authRoutes from './routes/authRoutes.js';
-import productsRoutes from './routes/productsRoutes.js';
-import { errors } from 'celebrate';
-import cookieParser from 'cookie-parser';
+// import notesRouter from './routes/notesRoutes.js';
+// import authRouter from './routes/authRoutes.js';
+// import userRouter from './routes/userRoutes.js';
 
 const app = express();
-const PORT = process.env.PORT ?? 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(logger);
+app.use(
+  cors({
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    origin: '*',
+  }),
+);
 
 app.use(express.json());
-app.use(cors());
-app.use(cookieParser());
+// app.use(cookieParser());
 
-app.use(authRoutes);
-app.use(productsRoutes);
+app.use(logger);
+// app.use(notesRouter);
+// app.use(authRouter);
+// app.use(userRouter);
+
+// app.use(errors());
+
+app.get('/', (req, res) => {
+  req.json({ message: 'API working' });
+});
 
 app.use(notFoundHandler);
-app.use(errors());
 app.use(errorHandler);
 
-await connectMongoDB();
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await connectMongoDB();
+
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('Mongo connection failed:', err);
+    process.exit(1);
+  }
+};
+
+startServer();

@@ -1,29 +1,29 @@
-import { Router } from 'express';
-import {
-  getProducts,
-  getProductById,
-  createProduct,
-  updateProductById,
-  deleteProduct,
-} from '../controllers/productsController.js';
-import { authenticate } from '../middleware/authenticate.js';
+// import { Router } from 'express';
+// import {
+//   getProducts,
+//   getProductById,
+//   createProduct,
+//   updateProductById,
+//   deleteProduct,
+// } from '../controllers/productsController.js';
+// import { authenticate } from '../middleware/authenticate.js';
 
-const router = Router();
+// const router = Router();
 
-router.use('/products', authenticate);
+// router.use('/products', authenticate);
 
-router.get('/products', getProducts);
+// router.get('/products', getProducts);
 
-// byID
-router.get('/products/:productId', getProductById);
+// // byID
+// router.get('/products/:productId', getProductById);
 
-// POST
-router.post('/products', createProduct);
+// // POST
+// router.post('/products', createProduct);
 
-// PATCH
-router.patch('/products/:productId', updateProductById);
+// // PATCH
+// router.patch('/products/:productId', updateProductById);
 
-// DELETE
-router.delete('/products/:productId', deleteProduct);
+// // DELETE
+// router.delete('/products/:productId', deleteProduct);
 
-export default router;
+// export default router;
