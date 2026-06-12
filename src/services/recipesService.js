@@ -1,5 +1,5 @@
 import Recipe from '../models/recipeModel.js';
-import Ingredient from '../models/ingredientModel.js';
+import { Ingredient } from '../models/ingredientModel.js';
 
 export const getAllRecipes = async (req, res) => {
   const { page = 1, perPage = 15, search, category, ingredient } = req.query;

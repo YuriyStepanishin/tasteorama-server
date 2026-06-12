@@ -1,9 +1,12 @@
-import Joi from 'joi';
+import { Joi, Segments } from 'celebrate';
+import { CATEGORIES } from '../constants/categories.js';
 
-const getAllRecipesSchema = Joi.object({
-  page: Joi.number().integer().min(1),
-  perPage: Joi.number().integer().min(1).max(100),
-  search: Joi.string().max(64),
-  category: Joi.string().hex().length(24),
-  ingredient: Joi.string().hex().length(24),
-});
+export const getAllRecipesSchema = {
+  [Segments.QUERY]: Joi.object({
+    page: Joi.number().integer().min(1),
+    perPage: Joi.number().integer().min(1).max(100),
+    search: Joi.string().max(64).trim().allow(''),
+    category: Joi.string().valid(...CATEGORIES),
+    ingredient: Joi.string().hex().length(24),
+  }),
+};
