@@ -14,6 +14,8 @@ import cookieParser from 'cookie-parser';
 // import authRouter from './routes/authRoutes.js';
 // import userRouter from './routes/userRoutes.js';
 import recipesRouter from './routes/recipesRoutes.js';
+import ingredientsRouter from './routes/ingredientsRoutes.js';
+import categoriesRouter from './routes/categoriesRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,6 +35,8 @@ app.use(logger);
 // app.use(authRouter);
 // app.use(userRouter);
 app.use(recipesRouter);
+app.use(ingredientsRouter);
+app.use(categoriesRouter);
 
 // app.use(errors());
 
