@@ -1,7 +1,7 @@
-import { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 const ingredientSchema = new Schema({
-  name: String,
+  name: { type: String },
 });
 
 export const Ingredient = model('ingredients', ingredientSchema);
