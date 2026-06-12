@@ -10,3 +10,24 @@ export const getAllRecipesSchema = {
     ingredient: Joi.string().hex().length(24),
   }),
 };
+
+export const createRecipeSchema = {
+  [Segments.BODY]: Joi.object({
+    name: Joi.string().max(64).required(),
+    decr: Joi.string().max(200).required(),
+    cookiesTime: Joi.number().integer().min(1).max(360).required(),
+    cals: Joi.number().integer().min(1).max(10000),
+    category: Joi.string().required(),
+    ingredients: Joi.array()
+      .items(
+        Joi.object({
+          ingredient: Joi.string().required(),
+
+          ingredientAmount: Joi.string().min(2).max(16).required(),
+        }),
+      )
+      .min(1)
+      .required(),
+    instruction: Joi.string().max(1200).required(),
+  }),
+};

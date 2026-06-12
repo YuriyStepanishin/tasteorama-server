@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
 
-//* Створюємо схему користувача
 const userSchema = new Schema(
   {
     name: {
@@ -24,7 +23,7 @@ const userSchema = new Schema(
     favorites: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'recipes',
+        ref: 'Recipe',
       },
     ],
   },
@@ -34,12 +33,10 @@ const userSchema = new Schema(
   },
 );
 
-//* Перевизначити toJSON() у моделі
 userSchema.methods.toJSON = function () {
-  const obj = this.toObject(); // створення точної копії
-  delete obj.password; // видаляється властивість password
-  return obj; // повертається копія на клієнта
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
 };
 
-//* Створюємо модель користувача
 export const User = model('User', userSchema);
