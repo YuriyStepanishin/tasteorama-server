@@ -1,4 +1,5 @@
 import Recipe from '../models/recipeModel.js';
+import Ingredient from '../models/ingredientModel.js';
 
 export const getAllRecipes = async (req, res) => {
   const { page = 1, perPage = 15, search, category, ingredient } = req.query;
@@ -10,7 +11,10 @@ export const getAllRecipes = async (req, res) => {
     recipesQuery.where('category').equals(category);
   }
   if (ingredient) {
-    recipesQuery.where('ingredients.ingredient').equals(ingredient);
+    const foundIngredient = await Ingredient.findOne({ name: ingredient });
+    if (foundIngredient) {
+      recipesQuery.where('ingredients.id').equals(foundIngredient._id);
+    }
   }
   if (search) {
     recipesQuery.where('name', { $regex: search, $options: 'i' });

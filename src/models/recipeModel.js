@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { CATEGORIES } from '../constants/categories.js';
 
 const recipeSchema = new Schema(
   {
@@ -31,8 +32,8 @@ const recipeSchema = new Schema(
     },
 
     category: {
-      type: Schema.Types.ObjectId,
-      ref: 'Category',
+      type: String,
+      enum: CATEGORIES,
       required: true,
     },
 
