@@ -1,16 +1,26 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
 
-import { getAllRecipes } from '../controllers/recipesController.js';
-import { getAllRecipesSchema } from '../validations/recipesValidation.js';
-
 import { authenticate } from '../middleware/authenticate.js';
-import { createRecipeSchema } from '../validations/recipesValidation.js';
-import { createRecipeController } from '../controllers/recipesController.js';
+
+import {
+  getAllRecipesController,
+  createRecipeController,
+  getFavoritesController,
+} from '../controllers/recipesController.js';
+
+import {
+  getAllRecipesSchema,
+  createRecipeSchema,
+} from '../validations/recipesValidation.js';
 
 const router = Router();
 
-router.get('/api/recipes', celebrate(getAllRecipesSchema), getAllRecipes);
+router.get(
+  '/api/recipes',
+  celebrate(getAllRecipesSchema),
+  getAllRecipesController,
+);
 
 router.post(
   '/api/recipes',
@@ -18,5 +28,7 @@ router.post(
   celebrate(createRecipeSchema),
   createRecipeController,
 );
+
+router.get('/api/recipes/favorites/list', authenticate, getFavoritesController);
 
 export default router;
