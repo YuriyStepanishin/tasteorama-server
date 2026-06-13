@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
-import { getAllRecipes } from '../services/recipesService.js';
+
+import { getAllRecipes } from '../controllers/recipesController.js';
 import { getAllRecipesSchema } from '../validations/recipesValidation.js';
 
 import { authenticate } from '../middleware/authenticate.js';
