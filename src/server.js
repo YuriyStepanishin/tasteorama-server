@@ -11,7 +11,7 @@ import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import cookieParser from 'cookie-parser';
 // import notesRouter from './routes/notesRoutes.js';
-// import authRouter from './routes/authRoutes.js';
+import authRouter from './routes/authRoutes.js';
 // import userRouter from './routes/userRoutes.js';
 import recipesRouter from './routes/recipesRoutes.js';
 import ingredientsRouter from './routes/ingredientsRoutes.js';
@@ -32,7 +32,7 @@ app.use(express.json());
 
 app.use(logger);
 // app.use(notesRouter);
-// app.use(authRouter);
+app.use(authRouter);
 // app.use(userRouter);
 app.use(recipesRouter);
 app.use(ingredientsRouter);
