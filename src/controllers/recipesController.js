@@ -1,5 +1,5 @@
+import createHttpError from 'http-errors';
 import Recipe from '../models/recipeModel.js';
-import { Ingredient } from '../models/ingredientModel.js';
 
 export const getAllRecipesController = async (req, res) => {
   const { page = 1, perPage = 15, search, category, ingredient } = req.query;
@@ -25,6 +25,21 @@ export const getAllRecipesController = async (req, res) => {
   const totalPages = Math.ceil(totalRecipes / perPage);
 
   res.status(200).json({ page, perPage, totalRecipes, totalPages, recipes });
+};
+
+export const getRecipeByIdController = async (req, res) => {
+  const { recipeId } = req.params;
+
+  const recipe = await Recipe.findById(recipeId).populate({
+    path: 'ingredients.ingredient',
+    select: 'name',
+  });
+
+  if (!recipe) {
+    throw createHttpError(404, 'Recipe not found');
+  }
+
+  res.status(200).json({ data: recipe });
 };
 
 export const createRecipeController = async (req, res) => {

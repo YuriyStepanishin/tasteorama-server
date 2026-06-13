@@ -11,6 +11,12 @@ export const getAllRecipesSchema = {
   }),
 };
 
+export const getRecipeByIdSchema = {
+  [Segments.PARAMS]: Joi.object({
+    recipeId: Joi.string().hex().length(24).required(),
+  }),
+};
+
 export const createRecipeSchema = {
   [Segments.BODY]: Joi.object({
     name: Joi.string().max(64).required(),
