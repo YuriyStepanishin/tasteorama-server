@@ -28,7 +28,7 @@ app.use(
 );
 
 app.use(express.json());
-// app.use(cookieParser());
+app.use(cookieParser());
 
 app.use(logger);
 // app.use(notesRouter);
@@ -38,10 +38,10 @@ app.use(recipesRouter);
 app.use(ingredientsRouter);
 app.use(categoriesRouter);
 
-// app.use(errors());
+app.use(errors());
 
 app.get('/', (req, res) => {
-  req.json({ message: 'API working' });
+  res.json({ message: 'API working' });
 });
 
 app.use(notFoundHandler);
