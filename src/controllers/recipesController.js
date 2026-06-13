@@ -1,7 +1,7 @@
 import Recipe from '../models/recipeModel.js';
 import { Ingredient } from '../models/ingredientModel.js';
 
-export const getAllRecipes = async (req, res) => {
+export const getAllRecipesController = async (req, res) => {
   const { page = 1, perPage = 15, search, category, ingredient } = req.query;
   const skip = (page - 1) * perPage;
 
@@ -36,4 +36,9 @@ export const createRecipeController = async (req, res) => {
   res.status(201).json({
     data: recipe,
   });
+};
+
+export const getFavoritesController = async (req, res) => {
+  const user = await User.findById(req.user._id).populate('favorites');
+  res.status(200).json({ recipes: user.favorites });
 };
