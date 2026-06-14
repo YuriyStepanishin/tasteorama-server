@@ -5,12 +5,14 @@ import { authenticate } from '../middleware/authenticate.js';
 
 import {
   getAllRecipesController,
+  getRecipeByIdController,
   createRecipeController,
   getFavoritesController,
 } from '../controllers/recipesController.js';
 
 import {
   getAllRecipesSchema,
+  getRecipeByIdSchema,
   createRecipeSchema,
 } from '../validations/recipesValidation.js';
 
@@ -30,5 +32,11 @@ router.post(
 );
 
 router.get('/api/recipes/favorites/list', authenticate, getFavoritesController);
+
+router.get(
+  '/api/recipes/:recipeId',
+  celebrate(getRecipeByIdSchema),
+  getRecipeByIdController,
+);
 
 export default router;

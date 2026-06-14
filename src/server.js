@@ -38,7 +38,7 @@ app.use(recipesRouter);
 app.use(ingredientsRouter);
 app.use(categoriesRouter);
 
-// app.use(errors());
+app.use(errors());
 
 app.get('/', (req, res) => {
   req.json({ message: 'API working' });
