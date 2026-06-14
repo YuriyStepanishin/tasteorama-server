@@ -100,6 +100,7 @@ export const getOwnRecipesController = async (req, res, next) => {
     });
 
     const skip = (safePage - 1) * safePerPage;
+
     const mongoSortOrder = parseSortOrder(sortOrder);
 
     const recipesQuery = Recipe.find({
