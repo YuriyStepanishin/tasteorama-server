@@ -1,7 +1,7 @@
-// import createHttpError from 'http-errors';
-// import { User } from '../models/user.js';
-// import bcrypt from 'bcrypt';
-// import { createSession, setSessionCookie } from '../services/authService.js';
+import createHttpError from 'http-errors';
+import { User } from '../models/userModel.js';
+import bcrypt from 'bcrypt';
+import { createSession, setSessionCookie } from '../services/authService.js';
 import { Session } from '../models/sessionModel.js';
 // import jwt from 'jsonwebtoken';
 // import fs from 'node:fs/promises';
@@ -25,39 +25,38 @@ import { Session } from '../models/sessionModel.js';
 //   res.status(201).json(newUser);
 // };
 
-// export const loginUser = async (req, res) => {
-//   const { email, password } = req.body;
+export const loginUser = async(req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw createHttpError(401, 'Invalid credentials');
+    }
+    const isValidPassword = await bcrypt.compare(
+        password,
+        user.password,
+    )
+    if (!isValidPassword) {
+        throw createHttpError(401, 'Invalid credentials');
+    }
+    await Session.deleteOne({ userId: user._id });
+    const session = await createSession(user._id);
+    setSessionCookie(res, session);
 
-//   const user = await User.findOne({ email });
-//   if (!user) {
-//     throw createHttpError(401, 'Invalid credentials');
-//   }
+    res.status(200).json(user);
+}
 
-//   const isValidPassword = await bcrypt.compare(password, user.password);
-//   if (!isValidPassword) {
-//     throw createHttpError(401, 'Invalid credentials');
-//   }
+export const logoutUser = async(req, res) => {
+    const { sessionId } = req.cookies;
 
-//   await Session.deleteOne({ userId: user._id });
+    if (sessionId) {
+        await Session.deleteOne({ _id: sessionId });
+    }
 
-//   const newSession = await createSession(user._id);
-//   setSessionCookie(res, newSession);
+    res.clearCookie('sessionId');
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
 
-//   res.status(200).json(user);
-// };
-
-export const logoutUser = async (req, res) => {
-  const { sessionId } = req.cookies;
-
-  if (sessionId) {
-    await Session.deleteOne({ _id: sessionId });
-  }
-
-  res.clearCookie('sessionId');
-  res.clearCookie('accessToken');
-  res.clearCookie('refreshToken');
-
-  res.status(204).send();
+    res.status(204).send();
 };
 
 // export const refreshSession = async (req, res) => {
