@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import mongoose from "mongoose";
 
 //* Створюємо схему користувача
 const userSchema = new Schema(

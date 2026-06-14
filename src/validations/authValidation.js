@@ -1,16 +1,25 @@
-// import { Joi, Segments } from 'celebrate';
+import { Joi, Segments } from 'celebrate';
 
-// export const registerUserSchema = {
-//   [Segments.BODY]: Joi.object({
-//     name: Joi.string().min(3).max(20).trim().required(),
-//     email: Joi.string().email().required().trim(),
-//     password: Joi.string().required(),
-//   }),
-// };
+export const registerUserSchema = {
+  [Segments.BODY]: Joi.object({
+    name: Joi.string().min(1).max(16).trim().required(),
 
-// export const loginUserSchema = {
-//   [Segments.BODY]: Joi.object({
-//     email: Joi.string().required().email(),
-//     password: Joi.string().required(),
-//   }),
-// };
+    email: Joi.string()
+      .email()
+      .max(128)
+      .trim()
+      .required(),
+
+    password: Joi.string()
+      .min(8)
+      .max(128)
+      .required(),
+  }),
+};
+
+export const loginUserSchema = {
+  [Segments.BODY]: Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }),
+};
