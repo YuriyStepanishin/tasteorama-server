@@ -2,7 +2,7 @@
 // import { User } from '../models/user.js';
 // import bcrypt from 'bcrypt';
 // import { createSession, setSessionCookie } from '../services/authService.js';
-// import { Session } from '../models/session.js';
+import { Session } from '../models/sessionModel.js';
 // import jwt from 'jsonwebtoken';
 // import fs from 'node:fs/promises';
 // import path from 'node:path';
