@@ -8,12 +8,14 @@ import {
   getRecipeByIdController,
   createRecipeController,
   getFavoritesController,
+  removeFavoriteController,
 } from '../controllers/recipesController.js';
 
 import {
   getAllRecipesSchema,
   getRecipeByIdSchema,
   createRecipeSchema,
+  removeFavoriteSchema,
 } from '../validations/recipesValidation.js';
 
 const router = Router();
@@ -32,6 +34,13 @@ router.post(
 );
 
 router.get('/api/recipes/favorites/list', authenticate, getFavoritesController);
+
+router.delete(
+  '/api/recipes/favorites/:recipeId',
+  authenticate,
+  celebrate(removeFavoriteSchema),
+  removeFavoriteController,
+);
 
 router.get(
   '/api/recipes/:recipeId',
