@@ -1,4 +1,5 @@
 import { Joi, Segments } from 'celebrate';
+import { isValidObjectId } from 'mongoose';
 import { CATEGORIES } from '../constants/categories.js';
 
 export const getAllRecipesSchema = {
@@ -35,5 +36,19 @@ export const createRecipeSchema = {
       .min(1)
       .required(),
     instruction: Joi.string().max(1200).required(),
+  }),
+};
+
+export const removeFavoriteSchema = {
+  [Segments.PARAMS]: Joi.object({
+    recipeId: Joi.string()
+      .custom((value, helpers) => {
+        if (!isValidObjectId(value)) {
+          return helpers.error('any.invalid');
+        }
+
+        return value;
+      })
+      .required(),
   }),
 };
