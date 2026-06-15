@@ -39,7 +39,7 @@ app.use(categoriesRouter);
 app.use(errors());
 
 app.get('/', (req, res) => {
-  req.json({ message: 'API working' });
+  res.json({ message: 'API working' });
 });
 
 app.use(notFoundHandler);

@@ -1,16 +1,14 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
-
 import { authenticate } from '../middleware/authenticate.js';
-
 import {
   getAllRecipesController,
+  getOwnRecipesController,
   getRecipeByIdController,
   createRecipeController,
   getFavoritesController,
   removeFavoriteController,
 } from '../controllers/recipesController.js';
-
 import {
   getAllRecipesSchema,
   getRecipeByIdSchema,
@@ -25,23 +23,20 @@ router.get(
   celebrate(getAllRecipesSchema),
   getAllRecipesController,
 );
-
+router.get('/api/recipes/user', authenticate, getOwnRecipesController);
 router.post(
   '/api/recipes',
   authenticate,
   celebrate(createRecipeSchema),
   createRecipeController,
 );
-
 router.get('/api/recipes/favorites/list', authenticate, getFavoritesController);
-
 router.delete(
   '/api/recipes/favorites/:recipeId',
   authenticate,
   celebrate(removeFavoriteSchema),
   removeFavoriteController,
 );
-
 router.get(
   '/api/recipes/:recipeId',
   celebrate(getRecipeByIdSchema),
