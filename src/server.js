@@ -1,3 +1,6 @@
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './swagger.js';
+
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
@@ -22,6 +25,8 @@ app.use(logger);
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(authRouter);
 app.use(userRouter);
