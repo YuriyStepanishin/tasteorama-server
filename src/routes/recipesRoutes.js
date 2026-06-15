@@ -7,6 +7,7 @@ import {
   getRecipeByIdController,
   createRecipeController,
   getFavoritesController,
+  addFavoriteController,
   removeFavoriteController,
 } from '../controllers/recipesController.js';
 import {
@@ -23,20 +24,32 @@ router.get(
   celebrate(getAllRecipesSchema),
   getAllRecipesController,
 );
+
 router.get('/api/recipes/user', authenticate, getOwnRecipesController);
+
 router.post(
   '/api/recipes',
   authenticate,
   celebrate(createRecipeSchema),
   createRecipeController,
 );
+
 router.get('/api/recipes/favorites/list', authenticate, getFavoritesController);
+
+router.post(
+  '/api/recipes/favorites/:recipeId',
+  authenticate,
+  celebrate(removeFavoriteSchema),
+  addFavoriteController,
+);
+
 router.delete(
   '/api/recipes/favorites/:recipeId',
   authenticate,
   celebrate(removeFavoriteSchema),
   removeFavoriteController,
 );
+
 router.get(
   '/api/recipes/:recipeId',
   celebrate(getRecipeByIdSchema),

@@ -98,6 +98,36 @@ export const getOwnRecipesController = async (req, res) => {
   res.status(200).json({ page, perPage, totalRecipes, totalPages, recipes });
 };
 
+export const addFavoriteController = async (req, res) => {
+  const { recipeId } = req.params;
+
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const recipe = await Recipe.findById(recipeId);
+
+  if (!recipe) {
+    throw createHttpError(404, 'Recipe not found');
+  }
+
+  const isFavorite = user.favorites.some((id) => id.toString() === recipeId);
+
+  if (isFavorite) {
+    throw createHttpError(409, 'Recipe already in favorites');
+  }
+
+  user.favorites.push(recipeId);
+
+  await user.save();
+
+  res.status(200).json({
+    message: 'Recipe added to favorites',
+  });
+};
+
 export const removeFavoriteController = async (req, res) => {
   const { recipeId } = req.params;
 
