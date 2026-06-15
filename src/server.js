@@ -18,44 +18,23 @@ import categoriesRouter from './routes/categoriesRoutes.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(
-  cors({
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    origin: '*',
-  }),
-);
-
+app.use(logger);
 app.use(express.json());
+app.use(cors());
 app.use(cookieParser());
 
-app.use(logger);
-// app.use(notesRouter);
 app.use(authRouter);
 app.use(userRouter);
 app.use(recipesRouter);
 app.use(ingredientsRouter);
 app.use(categoriesRouter);
 
-app.use(errors());
-
-app.get('/', (req, res) => {
-  res.json({ message: 'API working' });
-});
-
 app.use(notFoundHandler);
+app.use(errors());
 app.use(errorHandler);
 
-const startServer = async () => {
-  try {
-    await connectMongoDB();
+await connectMongoDB();
 
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  } catch (err) {
-    console.error('Mongo connection failed:', err);
-    process.exit(1);
-  }
-};
-
-startServer();
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

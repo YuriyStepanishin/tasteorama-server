@@ -4,7 +4,7 @@ import { User } from '../models/userModel.js';
 import { Ingredient } from '../models/ingredientModel.js';
 
 export const getAllRecipesController = async (req, res) => {
-  const { page = 1, perPage = 15, search, category, ingredient } = req.query;
+  const { page = 1, perPage = 12, search, category, ingredient } = req.query;
   const skip = (page - 1) * perPage;
 
   const recipesQuery = Recipe.find().sort({ createdAt: -1 });
@@ -60,7 +60,6 @@ export const getFavoritesController = async (req, res) => {
   res.status(200).json({ recipes: user.favorites });
 };
 
-
 export const getOwnRecipesController = async (req, res) => {
   const { page = 1, perPage = 12, search, category, ingredient } = req.query;
   const skip = (page - 1) * perPage;
@@ -98,7 +97,7 @@ export const getOwnRecipesController = async (req, res) => {
 
   res.status(200).json({ page, perPage, totalRecipes, totalPages, recipes });
 };
-  
+
 export const removeFavoriteController = async (req, res) => {
   const { recipeId } = req.params;
 
