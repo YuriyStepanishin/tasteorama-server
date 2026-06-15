@@ -3,11 +3,6 @@ import { User } from '../models/userModel.js';
 import bcrypt from 'bcrypt';
 import { createSession, setSessionCookie } from '../services/authService.js';
 import { Session } from '../models/sessionModel.js';
-import jwt from 'jsonwebtoken';
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import handlebars from 'handlebars';
-import { sendEmail } from '../utils/sendMail.js';
 
 export const registerUser = async (req, res) => {
   const { email, name, password } = req.body;

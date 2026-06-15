@@ -1,6 +1,6 @@
 import createHttpError from 'http-errors';
 import Recipe from '../models/recipeModel.js';
-import User from '../models/userModel.js';
+import { User } from '../models/userModel.js';
 import { Ingredient } from '../models/ingredientModel.js';
 
 export const getAllRecipesController = async (req, res) => {
@@ -60,6 +60,7 @@ export const getFavoritesController = async (req, res) => {
   res.status(200).json({ recipes: user.favorites });
 };
 
+
 export const getOwnRecipesController = async (req, res) => {
   const { page = 1, perPage = 12, search, category, ingredient } = req.query;
   const skip = (page - 1) * perPage;
@@ -96,4 +97,28 @@ export const getOwnRecipesController = async (req, res) => {
   const totalPages = Math.ceil(totalRecipes / perPage);
 
   res.status(200).json({ page, perPage, totalRecipes, totalPages, recipes });
+};
+  
+export const removeFavoriteController = async (req, res) => {
+  const { recipeId } = req.params;
+
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const isFavorite = user.favorites.some((id) => id.toString() === recipeId);
+
+  if (!isFavorite) {
+    throw createHttpError(404, 'Recipe not found in favorites');
+  }
+
+  user.favorites = user.favorites.filter((id) => id.toString() !== recipeId);
+
+  await user.save();
+
+  res.status(200).json({
+    message: 'Recipe removed from favorites',
+  });
 };
