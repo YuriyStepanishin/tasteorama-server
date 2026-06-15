@@ -71,7 +71,7 @@ const recipeSchema = new Schema(
       required: true,
     },
   },
-  { imestamps: true, versionKey: false },
+  { timestamps: true, versionKey: false },
 );
 
 export default model('Recipe', recipeSchema);
