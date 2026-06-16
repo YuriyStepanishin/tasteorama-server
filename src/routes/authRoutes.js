@@ -1,28 +1,21 @@
 import { celebrate } from 'celebrate';
 import { Router } from 'express';
 import {
-    loginUserSchema,
-    //   registerUserSchema,
-    //   requestResetEmailSchema,
+  loginUserSchema,
+  registerUserSchema,
 } from '../validations/authValidation.js';
 import {
-    //   registerUser,
-    loginUser,
-    logoutUser,
-    //   refreshSession,
-    //   requestResetEmail,
+  registerUser,
+  loginUser,
+  logoutUser,
+  refreshSession,
 } from '../controllers/authController.js';
 
 const router = Router();
 
-// router.post('/auth/register', celebrate(registerUserSchema), registerUser);
+router.post('/auth/register', celebrate(registerUserSchema), registerUser);
 router.post('/auth/login', celebrate(loginUserSchema), loginUser);
 router.post('/auth/logout', logoutUser);
-// router.post('/auth/refresh', refreshSession);
-// router.post(
-//   '/auth/request-reset-email',
-//   celebrate(requestResetEmailSchema),
-//   requestResetEmail,
-// );
+router.post('/auth/refresh', refreshSession);
 
 export default router;
