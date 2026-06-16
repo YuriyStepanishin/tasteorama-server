@@ -1,6 +1,6 @@
-import express from 'express';
-import 'dotenv/config';
-import cors from 'cors';
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import app from "./app.js";
 
 import { errors } from 'celebrate';
 import { connectMongoDB } from './db/connectMongoDB.js';
@@ -15,7 +15,6 @@ import recipesRouter from './routes/recipesRoutes.js';
 import ingredientsRouter from './routes/ingredientsRoutes.js';
 import categoriesRouter from './routes/categoriesRoutes.js';
 
-const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(logger);
