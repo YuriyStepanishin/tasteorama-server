@@ -1,3 +1,9 @@
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './swagger.js';
+
+import express from 'express';
+import 'dotenv/config';
+import cors from 'cors';
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import app from "./app.js";
@@ -15,12 +21,15 @@ import recipesRouter from './routes/recipesRoutes.js';
 import ingredientsRouter from './routes/ingredientsRoutes.js';
 import categoriesRouter from './routes/categoriesRoutes.js';
 
+const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(logger);
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(authRouter);
 app.use(userRouter);
