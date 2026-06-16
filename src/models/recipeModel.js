@@ -31,7 +31,7 @@ const recipeSchema = new Schema(
     },
 
     category: {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: 'Category',
       required: true,
     },
@@ -70,7 +70,7 @@ const recipeSchema = new Schema(
       required: true,
     },
   },
-  { imestamps: true, versionKey: false },
+  { timestamps: true, versionKey: false },
 );
 
 export default model('Recipe', recipeSchema);

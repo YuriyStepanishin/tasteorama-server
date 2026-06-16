@@ -2,23 +2,38 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import app from "./app.js";
 
-dotenv.config();
+import { errors } from 'celebrate';
+import { connectMongoDB } from './db/connectMongoDB.js';
+import { logger } from './middleware/logger.js';
+import { notFoundHandler } from './middleware/notFoundHandler.js';
+import { errorHandler } from './middleware/errorHandler.js';
+import cookieParser from 'cookie-parser';
+
+import authRouter from './routes/authRoutes.js';
+import userRouter from './routes/userRoutes.js';
+import recipesRouter from './routes/recipesRoutes.js';
+import ingredientsRouter from './routes/ingredientsRoutes.js';
+import categoriesRouter from './routes/categoriesRoutes.js';
 
 const PORT = process.env.PORT || 3000;
 
-const startServer = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URL);
-    console.log("MongoDB connected");
+app.use(logger);
+app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
 
-    app.listen(PORT, () => {
-      console.log(`Server running on ${PORT}`);
-    });
+app.use(authRouter);
+app.use(userRouter);
+app.use(recipesRouter);
+app.use(ingredientsRouter);
+app.use(categoriesRouter);
 
-  } catch (error) {
-    console.error("Mongo error:", error);
-    process.exit(1);
-  }
-};
+app.use(notFoundHandler);
+app.use(errors());
+app.use(errorHandler);
 
-startServer();
+await connectMongoDB();
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
