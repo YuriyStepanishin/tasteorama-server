@@ -14,8 +14,13 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+<<<<<<< feature/auth-register
+    "handlebars": "^4.7.9",
+=======
     "http-errors": "^2.0.1",
+>>>>>>> main
     "joi": "^18.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.0",
     "morgan": "^1.11.0",
     "pino-http": "^11.0.0",
@@ -28,6 +33,14 @@
   },
   "description": "This repository contains starter files for blended practical lessons.\r It provides a ready-to-use project structure so students can focus on learning and exercises without extra setup.",
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Tetiana Furmanets <tetanafurmanec79@gmail.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BogdanJanchenko/tasteorama-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BogdanJanchenko/tasteorama-server/issues"
+  },
+  "homepage": "https://github.com/BogdanJanchenko/tasteorama-server#readme"
 }
