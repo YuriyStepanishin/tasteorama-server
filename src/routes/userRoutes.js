@@ -25,6 +25,10 @@ const router = Router();
 //  *         description: Current user retrieved successfully
 //  *       401:
 //  *         description: Unauthorized
+// content:
+//   application/json:
+//     schema:
+//       $ref: '#/components/schemas/User'
 //  */
 router.get('/me', authenticate, getCurrentUser);
 

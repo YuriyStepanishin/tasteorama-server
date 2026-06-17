@@ -75,6 +75,66 @@ const options = {
             'instruction',
           ],
 
+          User: {
+  type: 'object',
+  properties: {
+    _id: {
+      type: 'string',
+    },
+    name: {
+      type: 'string',
+    },
+    email: {
+      type: 'string',
+    },
+  },
+},
+
+Category: {
+  type: 'object',
+  properties: {
+    _id: {
+      type: 'string',
+    },
+    name: {
+      type: 'string',
+    },
+  },
+},
+
+Ingredient: {
+  type: 'object',
+  properties: {
+    _id: {
+      type: 'string',
+    },
+    name: {
+      type: 'string',
+    },
+  },
+},
+
+Recipe: {
+  type: 'object',
+  properties: {
+    _id: {
+      type: 'string',
+    },
+    name: {
+      type: 'string',
+    },
+    decr: {
+      type: 'string',
+    },
+    category: {
+      type: 'string',
+    },
+    instruction: {
+      type: 'string',
+    },
+  },
+},
+
           properties: {
             name: {
               type: 'string',

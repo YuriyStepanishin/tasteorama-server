@@ -56,8 +56,14 @@ const router = Router();
 //  *         schema:
 //  *           type: string
 //  *     responses:
-//  *       200:
-//  *         description: Recipes retrieved successfully
+//  *      200:
+  // description: Recipes retrieved successfully
+  // content:
+  //   application/json:
+  //     schema:
+  //       type: array
+  //       items:
+  //         $ref: '#/components/schemas/Recipe'
 //  */
 router.get(
   '/api/recipes',
@@ -78,6 +84,12 @@ router.get(
 //  *         description: User recipes retrieved successfully
 //  *       401:
 //  *         description: Unauthorized
+// content:
+//   application/json:
+//     schema:
+//       type: array
+//       items:
+//         $ref: '#/components/schemas/Recipe'
 //  */
 router.get('/api/recipes/user', authenticate, getOwnRecipesController);
 
@@ -172,6 +184,10 @@ router.delete(
  *         description: Recipe found
  *       404:
  *         description: Recipe not found
+ * content:
+  application/json:
+    schema:
+      $ref: '#/components/schemas/Recipe'
  */
 router.get(
   '/api/recipes/:recipeId',
