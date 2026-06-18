@@ -167,28 +167,28 @@ router.delete(
   removeFavoriteController,
 );
 
-/**
- * @swagger
- * /api/recipes/{recipeId}:
- *   get:
- *     summary: Get recipe by id
- *     tags: [Recipes]
- *     parameters:
- *       - in: path
- *         name: recipeId
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Recipe found
- *       404:
- *         description: Recipe not found
- * content:
-  application/json:
-    schema:
-      $ref: '#/components/schemas/Recipe'
- */
+// /**
+// //  * @swagger
+//  * /api/recipes/{recipeId}:
+//  *   get:
+//  *     summary: Get recipe by id
+//  *     tags: [Recipes]
+//  *     parameters:
+//  *       - in: path
+//  *         name: recipeId
+//  *         required: true
+//  *         schema:
+//  *           type: string
+//  *     responses:
+//  *       200:
+//  *         description: Recipe found
+//  *       404:
+//  *         description: Recipe not found
+//  * content:
+//   application/json:
+//     schema:
+//       $ref: '#/components/schemas/Recipe'
+//  */
 router.get(
   '/api/recipes/:recipeId',
   celebrate(getRecipeByIdSchema),
