@@ -34,7 +34,7 @@ router.post(
   createRecipeController,
 );
 
-router.get('/api/recipes/favorites/list', authenticate, getFavoritesController);
+router.get('/api/recipes/favorites', authenticate, getFavoritesController);
 
 router.post(
   '/api/recipes/favorites/:recipeId',
