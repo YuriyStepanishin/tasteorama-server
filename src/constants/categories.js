@@ -9,4 +9,9 @@ export const CATEGORIES = [
   'Pork',
   'Vegetarian',
   'Miscellaneous',
+  'Soup',
+  'Breakfast',
+  'Side',
+  'Goat',
+  'Pasta',
 ];
