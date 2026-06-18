@@ -72,17 +72,7 @@ export const getOwnRecipesController = async (req, res) => {
     recipesQuery.where('category').equals(category);
   }
   if (ingredient) {
-    const foundIngredient = await Ingredient.findOne({
-      name: ingredient,
-    });
-
-    if (!foundIngredient) {
-      return res
-        .status(200)
-        .json({ page, perPage, totalRecipes: 0, totalPages: 0, recipes: [] });
-    } else {
-      recipesQuery.where('ingredients.ingredient').equals(foundIngredient._id);
-    }
+    recipesQuery.where('ingredients.id').equals(ingredient);
   }
   if (search) {
     recipesQuery.where('name', { $regex: search, $options: 'i' });
