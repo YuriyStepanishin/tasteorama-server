@@ -1,8 +1,11 @@
-import { Joi, Segments } from 'celebrate';
+//validations/authValidation.js
+
+import Joi from "joi";
+import { Segments } from "celebrate";
 
 export const registerUserSchema = {
   [Segments.BODY]: Joi.object({
-    name: Joi.string().min(1).max(16).trim().required(),
+    name: Joi.string().min(2).max(16).trim().required(),
 
     email: Joi.string()
       .email()

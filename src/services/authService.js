@@ -1,3 +1,15 @@
+//services/authService.js
+
+
+import jwt from "jsonwebtoken";
+
+export const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
+};
+
+
 // import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/times.js';
 // import { Session } from '../models/session.js';
 

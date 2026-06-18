@@ -1,3 +1,5 @@
+//routes/authRoutes.js
+
 import { authenticate } from "../middleware/authenticate.js";
  import { celebrate } from 'celebrate';
  import { Router } from 'express';
