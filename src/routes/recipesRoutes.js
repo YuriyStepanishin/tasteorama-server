@@ -1,10 +1,3 @@
-// /**
-//  * @swagger
-//  * tags:
-//  *   name: Recipes
-//  *   description: Recipes endpoints
-//  */
-
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
 import { authenticate } from '../middleware/authenticate.js';
@@ -14,6 +7,7 @@ import {
   getRecipeByIdController,
   createRecipeController,
   getFavoritesController,
+  addFavoriteController,
   removeFavoriteController,
 } from '../controllers/recipesController.js';
 import {
@@ -93,28 +87,6 @@ router.get(
 //  */
 router.get('/api/recipes/user', authenticate, getOwnRecipesController);
 
-// /**
-//  * @swagger
-//  * /api/recipes:
-//  *   post:
-//  *     summary: Create new recipe
-//  *     tags: [Recipes]
-//  *     security:
-//  *       - bearerAuth: []
-//  *     requestBody:
-//  *       required: true
-//  *       content:
-//  *         application/json:
-//  *           schema:
-//  *             $ref: '#/components/schemas/CreateRecipeRequest'
-//  *     responses:
-//  *       201:
-//  *         description: Recipe created successfully
-//  *       400:
-//  *         description: Validation error
-//  *       401:
-//  *         description: Unauthorized
-//  */
 router.post(
   '/api/recipes',
   authenticate,
@@ -122,44 +94,15 @@ router.post(
   createRecipeController,
 );
 
-// /**
-//  * @swagger
-//  * /api/recipes/favorites/list:
-//  *   get:
-//  *     summary: Get favorite recipes
-//  *     tags: [Recipes]
-//  *     security:
-//  *       - bearerAuth: []
-//  *     responses:
-//  *       200:
-//  *         description: Favorite recipes retrieved successfully
-//  *       401:
-//  *         description: Unauthorized
-//  */
-router.get('/api/recipes/favorites/list', authenticate, getFavoritesController);
+router.get('/api/recipes/favorites', authenticate, getFavoritesController);
 
-// /**
-//  * @swagger
-//  * /api/recipes/favorites/{recipeId}:
-//  *   delete:
-//  *     summary: Remove recipe from favorites
-//  *     tags: [Recipes]
-//  *     security:
-//  *       - bearerAuth: []
-//  *     parameters:
-//  *       - in: path
-//  *         name: recipeId
-//  *         required: true
-//  *         schema:
-//  *           type: string
-//  *     responses:
-//  *       200:
-//  *         description: Recipe removed from favorites
-//  *       401:
-//  *         description: Unauthorized
-//  *       404:
-//  *         description: Recipe not found
-//  */
+router.post(
+  '/api/recipes/favorites/:recipeId',
+  authenticate,
+  celebrate(removeFavoriteSchema),
+  addFavoriteController,
+);
+
 router.delete(
   '/api/recipes/favorites/:recipeId',
   authenticate,
