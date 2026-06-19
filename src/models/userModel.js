@@ -1,3 +1,5 @@
+//src/models/userModel.js
+
 import { Schema, model } from 'mongoose';
 import mongoose from "mongoose";
 
@@ -11,20 +13,17 @@ const userSchema = new Schema(
       trim: true,
       required: true,
     },
-    email: {
-      type: String,
-      minlength: 8,
-      maxlength: 128,
-      trim: true,
-      unique: true,
-      required: true,
-    },
+  email: {
+  type: String,
+  maxlength: 128,
+  trim: true,
+  unique: true,
+  required: true,
+},
     password: {
       type: String,
       required: true,
     },
-
-    token: String,
 
     favorites: [
       {
