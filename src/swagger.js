@@ -32,8 +32,8 @@ const options = {
           properties: {
             name: {
               type: 'string',
-              minLength: 3,
-              maxLength: 20,
+              minLength: 2,
+              maxLength: 16,
               example: 'John Doe',
             },
             email: {
