@@ -22,6 +22,12 @@ const router = express.Router();
 //  *         description: Categories retrieved successfully
 //  *       500:
 //  *         description: Server error
+// content:
+//   application/json:
+//     schema:
+//       type: array
+//       items:
+//         $ref: '#/components/schemas/Category'
 //  */
 router.get('/api/categories', getCategories);
 

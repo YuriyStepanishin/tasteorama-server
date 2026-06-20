@@ -1,3 +1,5 @@
+//controllers/authController.js
+
 import createHttpError from 'http-errors';
 import { User } from '../models/userModel.js';
 import bcrypt from 'bcrypt';
@@ -7,6 +9,19 @@ import { Session } from '../models/sessionModel.js';
 export const registerUser = async (req, res) => {
   const { email, name, password } = req.body;
 
+   if (!name || name.length < 2 || name.length > 16) {
+    throw createHttpError(400, "Name must be 2-16 characters");
+  }
+
+  if (!email || email.length > 128) {
+    throw createHttpError(400, "Email max length is 128");
+  }
+
+  if (!password || password.length < 8 || password.length > 128) {
+    throw createHttpError(400, "Password must be 8-128 characters");
+  }
+
+
   const isExistEmail = await User.findOne({ email });
   if (isExistEmail) {
     throw createHttpError(409, 'Email in use');
@@ -14,10 +29,22 @@ export const registerUser = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const newUser = await User.create({ email, name, password: hashedPassword });
+  const newUser = await User.create({
+    email,
+    name,
+    password: hashedPassword,
+  });
+
   const newSession = await createSession(newUser._id);
   setSessionCookie(res, newSession);
-  res.status(201).json(newUser);
+
+res.status(201).json({
+    user: {
+      _id: newUser._id,
+      email: newUser.email,
+      name: newUser.name,
+    },
+  });
 };
 
 export const loginUser = async (req, res) => {
@@ -38,7 +65,13 @@ export const loginUser = async (req, res) => {
   const newSession = await createSession(user._id);
   setSessionCookie(res, newSession);
 
-  res.status(200).json(user);
+res.status(200).json({
+  user: {
+    _id: user._id,
+    email: user.email,
+    name: user.name,
+  },
+});
 };
 
 export const logoutUser = async (req, res) => {
@@ -48,9 +81,17 @@ export const logoutUser = async (req, res) => {
     await Session.deleteOne({ _id: sessionId });
   }
 
-  res.clearCookie('sessionId');
-  res.clearCookie('accessToken');
-  res.clearCookie('refreshToken');
+ const isProd = process.env.NODE_ENV === "production";
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? 'none' : 'lax',
+};
+
+res.clearCookie('sessionId', cookieOptions);
+res.clearCookie('accessToken', cookieOptions);
+res.clearCookie('refreshToken', cookieOptions);
 
   res.status(204).send();
 };
@@ -62,19 +103,22 @@ export const refreshSession = async (req, res) => {
     throw createHttpError(401, 'Missing session credentials');
   }
 
-  const session = await Session.findOne({ _id: sessionId, refreshToken });
+  const session = await Session.findOne({
+    _id: sessionId,
+    refreshToken,
+  });
 
   if (!session) {
     throw createHttpError(401, 'Session not found');
   }
 
-  const isRefreshTokenExpired = session.refreshTokenValidUntil < new Date();
-
-  if (isRefreshTokenExpired) {
+  if (session.refreshTokenValidUntil < new Date()) {
     await session.deleteOne();
+
     res.clearCookie('sessionId');
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
+
     throw createHttpError(401, 'Refresh token expired');
   }
 
@@ -83,5 +127,11 @@ export const refreshSession = async (req, res) => {
   const newSession = await createSession(session.userId);
   setSessionCookie(res, newSession);
 
-  res.status(200).json({ message: 'Successfully refreshed a session!' });
+  res.status(200).json({ message: 'Session refreshed' });
+};
+
+export const getMe = (req, res) => {
+  res.json({
+    user: req.user,
+  });
 };

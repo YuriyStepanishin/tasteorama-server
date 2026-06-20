@@ -1,3 +1,7 @@
+//server.js
+
+import dotenv from "dotenv";
+import mongoose from "mongoose";
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger.js';
 
@@ -21,6 +25,15 @@ import categoriesRouter from './routes/categoriesRoutes.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+
+
 app.use(logger);
 app.use(express.json());
 app.use(
@@ -33,11 +46,15 @@ app.use(cookieParser());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use(authRouter);
-app.use(userRouter);
-app.use(recipesRouter);
-app.use(ingredientsRouter);
-app.use(categoriesRouter);
+app.use("/auth", authRouter);
+app.use("/users", userRouter);
+app.use("/recipes", recipesRouter);
+app.use("/ingredients", ingredientsRouter);
+app.use("/categories", categoriesRouter);
+
+app.get("/api-docs-test", (req, res) => {
+  res.json({ ok: true });
+});
 
 app.use(notFoundHandler);
 app.use(errors());

@@ -21,6 +21,12 @@ const router = express.Router();
 //  *         description: Ingredients retrieved successfully
 //  *       500:
 //  *         description: Server error
+// content:
+//   application/json:
+//     schema:
+//       type: array
+//       items:
+//         $ref: '#/components/schemas/Ingredient'
 //  */
 router.get('/api/ingredients', getIngredients);
 
