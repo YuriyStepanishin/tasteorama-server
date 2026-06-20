@@ -50,9 +50,7 @@ export const createRecipeController = async (req, res) => {
     owner: req.user._id,
   });
 
-  res.status(201).json({
-    data: recipe,
-  });
+  res.status(201).json({ recipe });
 };
 
 export const getFavoritesController = async (req, res) => {
