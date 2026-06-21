@@ -9,18 +9,16 @@ const recipeSchema = new Schema(
       trim: true,
     },
 
-    decr: {
+    description: {
       type: String,
       required: true,
       maxlength: 200,
       trim: true,
     },
 
-    cookiesTime: {
-      type: Number,
+    time: {
+      type: String,
       required: true,
-      min: 1,
-      max: 360,
     },
 
     cals: {
@@ -34,6 +32,11 @@ const recipeSchema = new Schema(
       type: String,
       ref: 'Category',
       required: true,
+    },
+
+    area: {
+      type: String,
+      trim: true,
     },
 
     ingredients: [
@@ -52,14 +55,14 @@ const recipeSchema = new Schema(
       },
     ],
 
-    instruction: {
+    instructions: {
       type: String,
       required: true,
       maxlength: 1200,
       trim: true,
     },
 
-    recipeImg: {
+    thumb: {
       type: String,
       default: null,
     },
