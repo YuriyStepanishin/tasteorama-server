@@ -37,11 +37,11 @@ app.use(cookieParser());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use("/auth", authRouter);
-app.use("/users", userRouter);
-app.use("/recipes", recipesRouter);
-app.use("/ingredients", ingredientsRouter);
-app.use("/categories", categoriesRouter);
+app.use(authRouter);
+app.use(userRouter);
+app.use(recipesRouter);
+app.use(ingredientsRouter);
+app.use(categoriesRouter);
 
 app.get("/api-docs-test", (req, res) => {
   res.json({ ok: true });
