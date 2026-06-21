@@ -16,7 +16,7 @@ export const getAllRecipesController = async (req, res) => {
     recipesQuery.where('ingredients.id').equals(ingredient);
   }
   if (search) {
-    recipesQuery.where('name', { $regex: search, $options: 'i' });
+    recipesQuery.where('title', { $regex: search, $options: 'i' });
   }
 
   const [totalRecipes, recipes] = await Promise.all([
@@ -73,7 +73,7 @@ export const getOwnRecipesController = async (req, res) => {
     recipesQuery.where('ingredients.id').equals(ingredient);
   }
   if (search) {
-    recipesQuery.where('name', { $regex: search, $options: 'i' });
+    recipesQuery.where('title', { $regex: search, $options: 'i' });
   }
 
   const [totalRecipes, recipes] = await Promise.all([
