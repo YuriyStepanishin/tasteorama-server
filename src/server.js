@@ -3,8 +3,6 @@ import 'dotenv/config';
 import cors from 'cors';
 
 import { errors } from 'celebrate';
-// import cookieParser from 'cookie-parser';
-import { errors } from 'celebrate';
 import { connectMongoDB } from './db/connectMongoDB.js';
 import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
@@ -18,12 +16,26 @@ import ingredientsRouter from './routes/ingredientsRoutes.js';
 import categoriesRouter from './routes/categoriesRoutes.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:4000',
+  process.env.FRONTEND_DOMAIN,
+].filter(Boolean);
 
 app.use(
   cors({
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    origin: '*',
+    origin: (origin, callback) => {
+      // Allow server-to-server requests (no origin) and allowed origins
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origin ${origin} not allowed`));
+      }
+    },
+    credentials: true,
   }),
 );
 
