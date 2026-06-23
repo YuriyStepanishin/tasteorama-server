@@ -1,7 +1,7 @@
 //server.js
 
-import dotenv from "dotenv";
-import mongoose from "mongoose";
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger.js';
 
@@ -23,13 +23,26 @@ import ingredientsRouter from './routes/ingredientsRoutes.js';
 import categoriesRouter from './routes/categoriesRoutes.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:4000',
+  process.env.FRONTEND_DOMAIN,
+].filter(Boolean);
 
 app.use(logger);
 app.use(express.json());
 app.use(
   cors({
-    origin: true,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origin ${origin} not allowed`));
+      }
+    },
     credentials: true,
   }),
 );
@@ -43,7 +56,7 @@ app.use(recipesRouter);
 app.use(ingredientsRouter);
 app.use(categoriesRouter);
 
-app.get("/api-docs-test", (req, res) => {
+app.get('/api-docs-test', (req, res) => {
   res.json({ ok: true });
 });
 

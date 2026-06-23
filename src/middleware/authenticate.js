@@ -1,8 +1,5 @@
-//middleware/authenticate.js
-
-
-import createHttpError from "http-errors";
-import { User } from "../models/userModel.js";
+import createHttpError from 'http-errors';
+import { User } from '../models/userModel.js';
 import { Session } from '../models/sessionModel.js';
 
 export const authenticate = async (req, res, next) => {
@@ -29,4 +26,3 @@ export const authenticate = async (req, res, next) => {
   req.user = user;
   next();
 };
-

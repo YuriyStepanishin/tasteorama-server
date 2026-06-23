@@ -1,6 +1,5 @@
 //services/authService.js
 
-
 import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/times.js';
 import { Session } from '../models/sessionModel.js';
 
@@ -17,27 +16,23 @@ export const createSession = async (userId) => {
   });
 };
 
-export const setSessionCookie = (res, session) => {
-  const isProd = process.env.NODE_ENV === "production";
-
+export const setSessionCookie = async (res, session) => {
   res.cookie('sessionId', session._id, {
     httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? 'none' : 'lax',
+    secure: true,
+    sameSite: 'none',
     maxAge: ONE_DAY,
   });
-
   res.cookie('accessToken', session.accessToken, {
     httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? 'none' : 'lax',
+    secure: true,
+    sameSite: 'none',
     maxAge: FIFTEEN_MINUTES,
   });
-
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? 'none' : 'lax',
+    secure: true,
+    sameSite: 'none',
     maxAge: ONE_DAY,
   });
 };

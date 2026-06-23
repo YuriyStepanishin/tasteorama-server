@@ -49,7 +49,7 @@ const recipeSchema = new Schema(
         ingredientAmount: {
           type: String,
           required: true,
-          minlength: 2,
+          minlength: 1,
           maxlength: 16,
         },
       },
