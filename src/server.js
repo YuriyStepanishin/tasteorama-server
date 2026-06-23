@@ -1,3 +1,10 @@
+//server.js
+
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './swagger.js';
+
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
@@ -8,7 +15,7 @@ import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import cookieParser from 'cookie-parser';
-// import notesRouter from './routes/notesRoutes.js';
+
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import recipesRouter from './routes/recipesRoutes.js';
@@ -24,11 +31,12 @@ const allowedOrigins = [
   process.env.FRONTEND_DOMAIN,
 ].filter(Boolean);
 
+app.use(logger);
+app.use(express.json());
 app.use(
   cors({
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     origin: (origin, callback) => {
-      // Allow server-to-server requests (no origin) and allowed origins
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -38,38 +46,26 @@ app.use(
     credentials: true,
   }),
 );
-
-app.use(express.json());
 app.use(cookieParser());
 
-app.use(logger);
-// app.use(notesRouter);
-app.use(authRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use('/auth', authRouter);
 app.use(userRouter);
 app.use(recipesRouter);
 app.use(ingredientsRouter);
 app.use(categoriesRouter);
 
-app.use(errors());
-
-app.get('/', (req, res) => {
-  req.json({ message: 'API working' });
+app.get('/api-docs-test', (req, res) => {
+  res.json({ ok: true });
 });
 
 app.use(notFoundHandler);
+app.use(errors());
 app.use(errorHandler);
 
-const startServer = async () => {
-  try {
-    await connectMongoDB();
+await connectMongoDB();
 
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  } catch (err) {
-    console.error('Mongo connection failed:', err);
-    process.exit(1);
-  }
-};
-
-startServer();
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

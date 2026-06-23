@@ -2,25 +2,23 @@ import { Schema, model } from 'mongoose';
 
 const recipeSchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
       maxlength: 64,
       trim: true,
     },
 
-    decr: {
+    description: {
       type: String,
       required: true,
       maxlength: 200,
       trim: true,
     },
 
-    cookiesTime: {
-      type: Number,
+    time: {
+      type: String,
       required: true,
-      min: 1,
-      max: 360,
     },
 
     cals: {
@@ -36,6 +34,11 @@ const recipeSchema = new Schema(
       required: true,
     },
 
+    area: {
+      type: String,
+      trim: true,
+    },
+
     ingredients: [
       {
         ingredient: {
@@ -46,20 +49,20 @@ const recipeSchema = new Schema(
         ingredientAmount: {
           type: String,
           required: true,
-          minlength: 2,
+          minlength: 1,
           maxlength: 16,
         },
       },
     ],
 
-    instruction: {
+    instructions: {
       type: String,
       required: true,
       maxlength: 1200,
       trim: true,
     },
 
-    recipeImg: {
+    thumb: {
       type: String,
       default: null,
     },
