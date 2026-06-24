@@ -35,16 +35,9 @@ app.use(logger);
 app.use(express.json());
 app.use(
   cors({
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS: origin ${origin} not allowed`));
-      }
-    },
+    origin: true,
     credentials: true,
-  }),
+  })
 );
 app.use(cookieParser());
 
