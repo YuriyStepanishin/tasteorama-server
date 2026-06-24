@@ -54,8 +54,47 @@ export const createRecipeController = async (req, res) => {
 };
 
 export const getFavoritesController = async (req, res) => {
-  const user = await User.findById(req.user._id).populate('favorites');
-  res.status(200).json({ recipes: user.favorites });
+  const { page = 1, perPage = 12, search, category, ingredient } = req.query;
+  const skip = (page - 1) * perPage;
+
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const recipesQuery = Recipe.find({
+    _id: { $in: user.favorites },
+  }).sort({
+    createdAt: -1,
+  });
+
+  if (category) {
+    recipesQuery.where('category').equals(category);
+  }
+
+  if (ingredient) {
+    recipesQuery.where('ingredients.id').equals(ingredient);
+  }
+
+  if (search) {
+    recipesQuery.where('title', { $regex: search, $options: 'i' });
+  }
+
+  const [totalRecipes, recipes] = await Promise.all([
+    recipesQuery.clone().countDocuments(),
+    recipesQuery.skip(Number(skip)).limit(Number(perPage)),
+  ]);
+
+  const totalPages = Math.ceil(totalRecipes / perPage);
+
+  res.status(200).json({
+    page,
+    perPage,
+    totalRecipes,
+    totalPages,
+    recipes,
+  });
 };
 
 export const getOwnRecipesController = async (req, res) => {
@@ -138,4 +177,22 @@ export const removeFavoriteController = async (req, res) => {
   res.status(200).json({
     message: 'Recipe removed from favorites',
   });
+};
+
+export const deleteRecipeController = async (req, res) => {
+  const { recipeId } = req.params;
+
+  const recipe = await Recipe.findById(recipeId);
+
+  if (!recipe) {
+    throw createHttpError(404, 'Recipe not found');
+  }
+
+  if (recipe.owner.toString() !== req.user._id.toString()) {
+    throw createHttpError(403, 'Forbidden');
+  }
+
+  await Recipe.findByIdAndDelete(recipeId);
+
+  res.status(204).send();
 };

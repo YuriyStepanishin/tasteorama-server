@@ -9,6 +9,7 @@ import {
   getFavoritesController,
   addFavoriteController,
   removeFavoriteController,
+  deleteRecipeController,
 } from '../controllers/recipesController.js';
 import {
   getAllRecipesSchema,
@@ -51,13 +52,13 @@ const router = Router();
 //  *           type: string
 //  *     responses:
 //  *      200:
-  // description: Recipes retrieved successfully
-  // content:
-  //   application/json:
-  //     schema:
-  //       type: array
-  //       items:
-  //         $ref: '#/components/schemas/Recipe'
+// description: Recipes retrieved successfully
+// content:
+//   application/json:
+//     schema:
+//       type: array
+//       items:
+//         $ref: '#/components/schemas/Recipe'
 //  */
 router.get(
   '/api/recipes',
@@ -132,6 +133,14 @@ router.delete(
 //     schema:
 //       $ref: '#/components/schemas/Recipe'
 //  */
+
+router.delete(
+  '/api/recipes/:recipeId',
+  authenticate,
+  celebrate(getRecipeByIdSchema),
+  deleteRecipeController,
+);
+
 router.get(
   '/api/recipes/:recipeId',
   celebrate(getRecipeByIdSchema),
