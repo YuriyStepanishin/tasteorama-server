@@ -89,7 +89,7 @@ router.get(
 router.get('/api/recipes/user', authenticate, getOwnRecipesController);
 
 router.post(
-  '/api/recipes',
+  '/api/add-recipe',
   authenticate,
   celebrate(createRecipeSchema),
   createRecipeController,
