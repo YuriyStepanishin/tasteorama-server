@@ -43,7 +43,7 @@ app.use(cookieParser());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use('/api/auth', authRouter);
+app.use('/auth', authRouter);
 app.use(userRouter);
 app.use(recipesRouter);
 app.use(ingredientsRouter);
