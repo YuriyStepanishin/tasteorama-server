@@ -25,6 +25,7 @@ export const createRecipeSchema = {
     time: Joi.string().required(),
     cals: Joi.number().integer().min(1).max(10000),
     category: Joi.string().required(),
+    area: Joi.string().optional(),
     ingredients: Joi.array()
       .items(
         Joi.object({
@@ -35,6 +36,7 @@ export const createRecipeSchema = {
       .min(1)
       .required(),
     instructions: Joi.string().max(1200).required(),
+    thumb: Joi.string().optional(),
   }),
 };
 
