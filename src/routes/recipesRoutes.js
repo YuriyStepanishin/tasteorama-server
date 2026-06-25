@@ -17,6 +17,8 @@ import {
   createRecipeSchema,
   removeFavoriteSchema,
 } from '../validations/recipesValidation.js';
+import { upload } from '../middleware/multer.js';
+import { parseIngredients } from '../middleware/parseFormData.js';
 
 const router = Router();
 
@@ -91,6 +93,8 @@ router.get('/api/recipes/user', authenticate, getOwnRecipesController);
 router.post(
   '/api/add-recipe',
   authenticate,
+  upload.single('thumb'),
+  parseIngredients,
   celebrate(createRecipeSchema),
   createRecipeController,
 );

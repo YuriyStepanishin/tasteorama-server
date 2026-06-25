@@ -2,6 +2,7 @@ import createHttpError from 'http-errors';
 import Recipe from '../models/recipeModel.js';
 import { User } from '../models/userModel.js';
 import { Ingredient } from '../models/ingredientModel.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getAllRecipesController = async (req, res) => {
   const { page = 1, perPage = 12, search, category, ingredient } = req.query;
@@ -45,8 +46,15 @@ export const getRecipeByIdController = async (req, res) => {
 };
 
 export const createRecipeController = async (req, res) => {
+  let thumbUrl = null;
+
+  if (req.file) {
+    const cloudinaryResult = await saveFileToCloudinary(req.file.buffer);
+    thumbUrl = cloudinaryResult.secure_url;
+  }
   const recipe = await Recipe.create({
     ...req.body,
+    thumb: thumbUrl,
     owner: req.user._id,
   });
 
